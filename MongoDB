@@ -1,0 +1,897 @@
+
+C:\Users\ADMIN>mongosh
+Current Mongosh Log ID: 65cae927ef372af114ee095b
+Connecting to:          mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.1.4
+Using MongoDB:          7.0.5
+Using Mongosh:          2.1.4
+
+For mongosh info see: https://docs.mongodb.com/mongodb-shell/
+
+------
+   The server generated these startup warnings when booting
+   2024-02-13T08:55:02.992+05:30: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+------
+
+test> use d2
+switched to db d2
+d2> show dbs
+admin    40.00 KiB
+config  108.00 KiB
+d1       40.00 KiB
+local    40.00 KiB
+d2> db.createCollection("persons")
+{ ok: 1 }
+d2> db.persons.insert(
+... {
+... FirstName : 'Malavika',
+... LastName : 'Ajith',
+... Age : 22,
+... Address : 'Pallikunnu',
+... City : 'Kannur'
+... })
+DeprecationWarning: Collection.insert() is deprecated. Use insertOne, insertMany, or bulkWrite.
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId('65caea3aef372af114ee095c') }
+}
+d2> db.persons.find()
+[
+  {
+    _id: ObjectId('65caea3aef372af114ee095c'),
+    FirstName: 'Malavika',
+    LastName: 'Ajith',
+d2>
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  }
+]
+d2> db.persons.find().pretty()
+[
+  {
+    _id: ObjectId('65caea3aef372af114ee095c'),
+    FirstName: 'Malavika',
+    LastName: 'Ajith',
+    Age: 22,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  }
+]
+d2> db.persons.insert(
+... {
+... FirstName : "Dhanush",
+... Lastname : "CH",
+... Age : 22,
+... Address : "ch house",
+... City : "Kannur"
+... })
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId('65caee2bef372af114ee095d') }
+}
+d2> db.persons.find()
+[
+  {
+    _id: ObjectId('65caea3aef372af114ee095c'),
+    FirstName: 'Malavika',
+    LastName: 'Ajith',
+    Age: 22,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caee2bef372af114ee095d'),
+    FirstName: 'Dhanush',
+    Lastname: 'CH',
+    Age: 22,
+    Address: 'ch house',
+    City: 'Kannur'
+  }
+]
+d2> db.persons.insertMany(
+... {
+... db.persons.insert( { FirstName: "Dhanush", Lastname: "CH", Age: 22, Address: "ch house",
+Uncaught:
+SyntaxError: Unexpected token, expected "," (3:2)
+
+  1 | db.persons.insertMany(
+  2 | {
+> 3 | db.persons.insert( { FirstName: "Dhanush", Lastname: "CH", Age: 22, Address: "ch house",
+    |   ^
+  4 |
+
+d2> db.persons.insert( { FirstName: "Shabana", Lastname : "Ajith", Age : 50, Address : "Pallikunnu", City : "Kannur" })
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId('65caf04fef372af114ee095e') }
+}
+d2> db.persons.find()
+[
+  {
+    _id: ObjectId('65caea3aef372af114ee095c'),
+    FirstName: 'Malavika',
+    LastName: 'Ajith',
+    Age: 22,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caee2bef372af114ee095d'),
+    FirstName: 'Dhanush',
+    Lastname: 'CH',
+    Age: 22,
+    Address: 'ch house',
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caf04fef372af114ee095e'),
+    FirstName: 'Shabana',
+    Lastname: 'Ajith',
+    Age: 50,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  }
+]
+d2> db.persons.update({Address : "ch house"},{$set:{Address : "pulikal house"}})
+DeprecationWarning: Collection.update() is deprecated. Use updateOne, updateMany, or bulkWrite.
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+d2> db.persons.find()
+[
+  {
+    _id: ObjectId('65caea3aef372af114ee095c'),
+    FirstName: 'Malavika',
+    LastName: 'Ajith',
+    Age: 22,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caee2bef372af114ee095d'),
+    FirstName: 'Dhanush',
+    Lastname: 'CH',
+    Age: 22,
+    Address: 'pulikal house',
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caf04fef372af114ee095e'),
+    FirstName: 'Shabana',
+    Lastname: 'Ajith',
+    Age: 50,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  }
+]
+d2> db.persons.remove({Age : 50})
+DeprecationWarning: Collection.remove() is deprecated. Use deleteOne, deleteMany, findOneAndDelete, or bulkWrite.
+{ acknowledged: true, deletedCount: 1 }
+d2> db.persons.find()
+[
+  {
+    _id: ObjectId('65caea3aef372af114ee095c'),
+    FirstName: 'Malavika',
+    LastName: 'Ajith',
+    Age: 22,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caee2bef372af114ee095d'),
+    FirstName: 'Dhanush',
+    Lastname: 'CH',
+    Age: 22,
+    Address: 'pulikal house',
+    City: 'Kannur'
+  }
+]
+d2> db.persons.deleteOne({Address : 'Pallikunnu'})
+{ acknowledged: true, deletedCount: 1 }
+d2> db.persons.find()
+[
+  {
+    _id: ObjectId('65caee2bef372af114ee095d'),
+    FirstName: 'Dhanush',
+    Lastname: 'CH',
+    Age: 22,
+    Address: 'pulikal house',
+    City: 'Kannur'
+  }
+]
+d2> db.persons.find({City :'Kannur'})
+[
+  {
+    _id: ObjectId('65caee2bef372af114ee095d'),
+    FirstName: 'Dhanush',
+    Lastname: 'CH',
+    Age: 22,
+    Address: 'pulikal house',
+    City: 'Kannur'
+  }
+]
+d2> db.persons.insert( { FirstName: 'Malavika', LastName: 'Ajith', Age: 22, Address: 'Pallikunnu', City: 'Kannur' })
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId('65caf312ef372af114ee095f') }
+}
+d2> db.persons.find()
+[
+  {
+    _id: ObjectId('65caee2bef372af114ee095d'),
+    FirstName: 'Dhanush',
+    Lastname: 'CH',
+    Age: 22,
+    Address: 'pulikal house',
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caf312ef372af114ee095f'),
+    FirstName: 'Malavika',
+    LastName: 'Ajith',
+    Age: 22,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  }
+]
+d2> db.persons.find({City :'Kannur'})
+[
+  {
+    _id: ObjectId('65caee2bef372af114ee095d'),
+    FirstName: 'Dhanush',
+    Lastname: 'CH',
+    Age: 22,
+    Address: 'pulikal house',
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caf312ef372af114ee095f'),
+    FirstName: 'Malavika',
+    LastName: 'Ajith',
+    Age: 22,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  }
+]
+d2> db.persons.insert( { FirstName: 'Shabana', LastName: 'Ajith', Age: 50, Address: 'Pallikunnu', City: 'Kannur' })
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId('65caf364ef372af114ee0960') }
+}
+d2> db.persons.find()
+[
+  {
+    _id: ObjectId('65caee2bef372af114ee095d'),
+    FirstName: 'Dhanush',
+    Lastname: 'CH',
+    Age: 22,
+    Address: 'pulikal house',
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caf312ef372af114ee095f'),
+    FirstName: 'Malavika',
+    LastName: 'Ajith',
+    Age: 22,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caf364ef372af114ee0960'),
+    FirstName: 'Shabana',
+    LastName: 'Ajith',
+    Age: 50,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  }
+]
+d2> db.persons.find().limit(2)
+[
+  {
+    _id: ObjectId('65caee2bef372af114ee095d'),
+    FirstName: 'Dhanush',
+    Lastname: 'CH',
+    Age: 22,
+    Address: 'pulikal house',
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caf312ef372af114ee095f'),
+    FirstName: 'Malavika',
+    LastName: 'Ajith',
+    Age: 22,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  }
+]
+d2> db.
+...
+...
+...
+... db.persons.find().limit(2)
+
+d2> db. db.persons.find().limit(2).skip(1)
+
+d2>  db.persons.find().limit(2).skip(1)
+[
+  {
+    _id: ObjectId('65caf312ef372af114ee095f'),
+    FirstName: 'Malavika',
+    LastName: 'Ajith',
+    Age: 22,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caf364ef372af114ee0960'),
+    FirstName: 'Shabana',
+    LastName: 'Ajith',
+    Age: 50,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  }
+]
+d2> db.persons.find({City : {$eq :'Kannur'}})
+[
+  {
+    _id: ObjectId('65caee2bef372af114ee095d'),
+    FirstName: 'Dhanush',
+    Lastname: 'CH',
+    Age: 22,
+    Address: 'pulikal house',
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caf312ef372af114ee095f'),
+    FirstName: 'Malavika',
+    LastName: 'Ajith',
+    Age: 22,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caf364ef372af114ee0960'),
+    FirstName: 'Shabana',
+    LastName: 'Ajith',
+    Age: 50,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  }
+]
+d2> db.persons.find({Address : {$eq :'Pallikunnu'}})
+[
+  {
+    _id: ObjectId('65caf312ef372af114ee095f'),
+    FirstName: 'Malavika',
+    LastName: 'Ajith',
+    Age: 22,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caf364ef372af114ee0960'),
+    FirstName: 'Shabana',
+    LastName: 'Ajith',
+    Age: 50,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  }
+]
+d2> db.persons.find({Adress : {$ne : 'pulikal house'}})
+[
+  {
+    _id: ObjectId('65caee2bef372af114ee095d'),
+    FirstName: 'Dhanush',
+    Lastname: 'CH',
+    Age: 22,
+    Address: 'pulikal house',
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caf312ef372af114ee095f'),
+    FirstName: 'Malavika',
+    LastName: 'Ajith',
+    Age: 22,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caf364ef372af114ee0960'),
+    FirstName: 'Shabana',
+    LastName: 'Ajith',
+    Age: 50,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  }
+]
+d2> db.persons.find({Address : {$ne :'Pallikunnu'}})
+[
+  {
+    _id: ObjectId('65caee2bef372af114ee095d'),
+    FirstName: 'Dhanush',
+    Lastname: 'CH',
+    Age: 22,
+    Address: 'pulikal house',
+    City: 'Kannur'
+  }
+]
+d2> db.persons.find({Age : {$gt :22}})
+[
+  {
+    _id: ObjectId('65caf364ef372af114ee0960'),
+    FirstName: 'Shabana',
+    LastName: 'Ajith',
+    Age: 50,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  }
+]
+d2> db.persons.find({Age : {$gte :22}})
+[
+  {
+    _id: ObjectId('65caee2bef372af114ee095d'),
+    FirstName: 'Dhanush',
+    Lastname: 'CH',
+    Age: 22,
+    Address: 'pulikal house',
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caf312ef372af114ee095f'),
+    FirstName: 'Malavika',
+    LastName: 'Ajith',
+    Age: 22,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caf364ef372af114ee0960'),
+    FirstName: 'Shabana',
+    LastName: 'Ajith',
+    Age: 50,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  }
+]
+d2> db.persons.find({Age : {$lt :50}})
+[
+  {
+    _id: ObjectId('65caee2bef372af114ee095d'),
+    FirstName: 'Dhanush',
+    Lastname: 'CH',
+    Age: 22,
+    Address: 'pulikal house',
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caf312ef372af114ee095f'),
+    FirstName: 'Malavika',
+    LastName: 'Ajith',
+    Age: 22,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  }
+]
+d2> db.persons.find({Age : {$lte :50}})
+[
+  {
+    _id: ObjectId('65caee2bef372af114ee095d'),
+    FirstName: 'Dhanush',
+    Lastname: 'CH',
+    Age: 22,
+    Address: 'pulikal house',
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caf312ef372af114ee095f'),
+    FirstName: 'Malavika',
+    LastName: 'Ajith',
+    Age: 22,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caf364ef372af114ee0960'),
+    FirstName: 'Shabana',
+    LastName: 'Ajith',
+    Age: 50,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  }
+]
+d2> db.persons.find({Age : {$in :22}})
+MongoServerError[BadValue]: $in needs an array
+d2> db.persons.find({Age : {$in :[22]}})
+[
+  {
+    _id: ObjectId('65caee2bef372af114ee095d'),
+    FirstName: 'Dhanush',
+    Lastname: 'CH',
+    Age: 22,
+    Address: 'pulikal house',
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caf312ef372af114ee095f'),
+    FirstName: 'Malavika',
+    LastName: 'Ajith',
+    Age: 22,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  }
+]
+d2> db.persons.find({Age : {$and :22}})
+MongoServerError[BadValue]: unknown operator: $and
+d2>   db.persons.find({
+... $and : [{
+... City : 'Kannur'},
+... ]
+... })
+[
+  {
+    _id: ObjectId('65caee2bef372af114ee095d'),
+    FirstName: 'Dhanush',
+    Lastname: 'CH',
+    Age: 22,
+    Address: 'pulikal house',
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caf312ef372af114ee095f'),
+    FirstName: 'Malavika',
+    LastName: 'Ajith',
+    Age: 22,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caf364ef372af114ee0960'),
+    FirstName: 'Shabana',
+    LastName: 'Ajith',
+    Age: 50,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  }
+]
+d2> db.persons.find({ $or: [{ Address: 'Pallikunnu' }] })
+[
+  {
+    _id: ObjectId('65caf312ef372af114ee095f'),
+    FirstName: 'Malavika',
+    LastName: 'Ajith',
+    Age: 22,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caf364ef372af114ee0960'),
+    FirstName: 'Shabana',
+    LastName: 'Ajith',
+    Age: 50,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  }
+]
+d2> db.persons.find({ $nor: [{ Address: 'Pallikunnu' }] })
+[
+  {
+    _id: ObjectId('65caee2bef372af114ee095d'),
+    FirstName: 'Dhanush',
+    Lastname: 'CH',
+    Age: 22,
+    Address: 'pulikal house',
+    City: 'Kannur'
+  }
+]
+d2> db.persons.find({ $not: [{ Address: 'Pallikunnu' }] })
+MongoServerError[BadValue]: unknown top level operator: $not. If you are trying to negate an entire expression, use $nor.
+d2> db.persons.find( {City :"pulikal house"},
+... {$unset : {City : ""}})
+MongoServerError[Location16410]: FieldPath field names may not start with '$'. Consider using $getField or $setField.
+d2> db.persons.update({ City: "pulikal house" }, { $unset: { City: "" }})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+d2> db.persons.find()
+[
+  {
+    _id: ObjectId('65caee2bef372af114ee095d'),
+    FirstName: 'Dhanush',
+    Lastname: 'CH',
+    Age: 22,
+    Address: 'pulikal house',
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caf312ef372af114ee095f'),
+    FirstName: 'Malavika',
+    LastName: 'Ajith',
+    Age: 22,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caf364ef372af114ee0960'),
+    FirstName: 'Shabana',
+    LastName: 'Ajith',
+    Age: 50,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  }
+]
+d2> db.persons.update({ Address: "pulikal house" }, { $unset: { Address: "" }})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+d2> db.persons.find()
+[
+  {
+    _id: ObjectId('65caee2bef372af114ee095d'),
+    FirstName: 'Dhanush',
+    Lastname: 'CH',
+    Age: 22,
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caf312ef372af114ee095f'),
+    FirstName: 'Malavika',
+    LastName: 'Ajith',
+    Age: 22,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caf364ef372af114ee0960'),
+    FirstName: 'Shabana',
+    LastName: 'Ajith',
+    Age: 50,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  }
+]
+d2> db.persons.update({ Address: "pulikal house" }, { $rename: { Address: "House" }})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+d2> db.persons.find()
+[
+  {
+    _id: ObjectId('65caee2bef372af114ee095d'),
+    FirstName: 'Dhanush',
+    Lastname: 'CH',
+    Age: 22,
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caf312ef372af114ee095f'),
+    FirstName: 'Malavika',
+    LastName: 'Ajith',
+    Age: 22,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caf364ef372af114ee0960'),
+    FirstName: 'Shabana',
+    LastName: 'Ajith',
+    Age: 50,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  }
+]
+d2> db.persons.update({ Address: "Pallikunnu" }, { $rename: { Address: "House" }})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+d2> db.persons.find()
+[
+  {
+    _id: ObjectId('65caee2bef372af114ee095d'),
+    FirstName: 'Dhanush',
+    Lastname: 'CH',
+    Age: 22,
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caf312ef372af114ee095f'),
+    FirstName: 'Malavika',
+    LastName: 'Ajith',
+    Age: 22,
+    City: 'Kannur',
+    House: 'Pallikunnu'
+  },
+  {
+    _id: ObjectId('65caf364ef372af114ee0960'),
+    FirstName: 'Shabana',
+    LastName: 'Ajith',
+    Age: 50,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  }
+]
+d2> db.persons.insert( { FirstName: 'Vyshnav', LastName: 'Ajith', Age: 27, Address: 'Coventry', City: 'UK' })
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId('65cb0823ef372af114ee0961') }
+}
+d2> db.persons.aggregate([
+... {$match : { City : 'UK'}}])
+[
+d2>
+    _id: ObjectId('65cb0823ef372af114ee0961'),
+    FirstName: 'Vyshnav',
+    LastName: 'Ajith',
+    Age: 27,
+    Address: 'Coventry',
+    City: 'UK'
+  }
+]
+d2> db.persons.aggregate(
+... [{$group : { _id : "$City"}}]
+... )
+[ { _id: 'Kannur' }, { _id: 'UK' } ]
+... {
+...
+... }
+...
+d2> db.persons.aggregate ([
+... { $project : { _id : "$City"}}])
+[
+  { _id: 'Kannur' },
+  { _id: 'Kannur' },
+  { _id: 'Kannur' },
+  { _id: 'UK' }
+]
+d2> db.persons.aggregate([
+... {$sort : { "Age" : -1}}])
+[
+  {
+    _id: ObjectId('65caf364ef372af114ee0960'),
+    FirstName: 'Shabana',
+    LastName: 'Ajith',
+    Age: 50,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65cb0823ef372af114ee0961'),
+    FirstName: 'Vyshnav',
+    LastName: 'Ajith',
+    Age: 27,
+    Address: 'Coventry',
+    City: 'UK'
+  },
+  {
+    _id: ObjectId('65caee2bef372af114ee095d'),
+    FirstName: 'Dhanush',
+    Lastname: 'CH',
+    Age: 22,
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caf312ef372af114ee095f'),
+    FirstName: 'Malavika',
+    LastName: 'Ajith',
+    Age: 22,
+    City: 'Kannur',
+    House: 'Pallikunnu'
+  }
+]
+d2> db.persons.aggregate([ { $sort: { "Age": 1 } }])
+[
+  {
+    _id: ObjectId('65caee2bef372af114ee095d'),
+    FirstName: 'Dhanush',
+    Lastname: 'CH',
+    Age: 22,
+    City: 'Kannur'
+  },
+  {
+    _id: ObjectId('65caf312ef372af114ee095f'),
+    FirstName: 'Malavika',
+    LastName: 'Ajith',
+    Age: 22,
+    City: 'Kannur',
+    House: 'Pallikunnu'
+  },
+  {
+    _id: ObjectId('65cb0823ef372af114ee0961'),
+    FirstName: 'Vyshnav',
+    LastName: 'Ajith',
+    Age: 27,
+    Address: 'Coventry',
+    City: 'UK'
+  },
+  {
+    _id: ObjectId('65caf364ef372af114ee0960'),
+    FirstName: 'Shabana',
+    LastName: 'Ajith',
+    Age: 50,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  }
+]
+d2> db.persons.aggregate([ { $addFields: { _id: "$City" } }])
+[
+  {
+    _id: 'Kannur',
+    FirstName: 'Dhanush',
+    Lastname: 'CH',
+    Age: 22,
+    City: 'Kannur'
+  },
+  {
+    _id: 'Kannur',
+    FirstName: 'Malavika',
+    LastName: 'Ajith',
+    Age: 22,
+    City: 'Kannur',
+    House: 'Pallikunnu'
+  },
+  {
+    _id: 'Kannur',
+    FirstName: 'Shabana',
+    LastName: 'Ajith',
+    Age: 50,
+    Address: 'Pallikunnu',
+    City: 'Kannur'
+  },
+  {
+    _id: 'UK',
+    FirstName: 'Vyshnav',
+    LastName: 'Ajith',
+    Age: 27,
+    Address: 'Coventry',
+    City: 'UK'
+  }
+]
+d2> db.persons.aggregate([ { $match: { City: 'UK' },{$count :"totalUK" }])
+Uncaught:
+SyntaxError: Unexpected token (1:48)
+
+> 1 | db.persons.aggregate([ { $match: { City: 'UK' },{$count :"totalUK" }])
+    |                                                 ^
+  2 |
+
+d2> db.persons.aggregate([ { $match: { City: 'UK' },{$count :"totalUK" }}])
+Uncaught:
+SyntaxError: Unexpected token (1:48)
+
+> 1 | db.persons.aggregate([ { $match: { City: 'UK' },{$count :"totalUK" }}])
+    |                                                 ^
+  2 |
+
+d2> db.persons.aggregate([{$count :"total" }])
+[ { total: 4 } ]
+d2> db.persons.aggregate([{$out :{City:'UK'}])
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:40)
+
+> 1 | db.persons.aggregate([{$out :{City:'UK'}])
+    |                                         ^
+  2 |
+
+d2> db.persons.aggregate([{$out : 'City'}])
+
+d2> db.persons.aggregate([{$out : City}])
+ReferenceError: City is not defined
+d2> db.persons.aggregate([{$out : 'City'}])
